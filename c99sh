@@ -179,6 +179,27 @@ then emit_main_open
      emit_main_close
 fi
 
+# Helper function to process a c99sh specific pragma
+process_pragma() {
+    [ $# -lt 2 ] && return
+    declare -l compiler=$1 type=$2
+    shift 2
+    [ $v -ge 2 ] && echo "pragma: $compiler $type $@"
+    case "$type" in
+        cflags)
+            flags+=($@)
+            ;;
+        *)
+            echo "warn: Ingnoring: #pragma ${compiler}sh $type $@" 1>&2
+            ;;
+    esac
+}
+
+# Process c99sh specific pragmas
+while read pragma; do
+    process_pragma $pragma
+done <<< "$(cat "$c" | sed -n 's|^#pragma \(c\S\S\)sh \(.*\)$|\1 \2|p')"
+
 # Compile the generated source with appropriate verbosity
 [ $v -ge 2 ] && cat "$c" 1>&2
 [ $v -ge 1 ] && set -x
