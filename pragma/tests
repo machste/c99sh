@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+cd "${0%/*}"
+
+./hello
+
+./plan9
+
+./shebang.c
+gcc ./shebang.c
+./a.out
+rm a.out

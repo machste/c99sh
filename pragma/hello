@@ -1,0 +1,10 @@
+#!../c99sh
+#pragma c99sh cflags -Werror
+
+#include <stdio.h>
+
+int main()
+{
+    printf("Hello, world!\n");
+}
+// vim:syntax=c
